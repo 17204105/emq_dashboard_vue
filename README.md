@@ -8,3 +8,6 @@ I am working on a vuejs 2 version of the dashboard.
 
 Stay tuned
 
+## TODO
+
+- User add, edit, remove
