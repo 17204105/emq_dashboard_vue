@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dashboard</title>
+<meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<link rel="shortcut icon" href="assets/imgs/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="assets/css/bootstrap.css" />
+<link rel="stylesheet" href="assets/css/sog.min.css" />
+<link rel="stylesheet" href="assets/css/dashboard.css" />
+<link rel="stylesheet" href="assets/css/nv.d3.css" />
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="page-body">
+	<div class="page-container">
+    
+		<div class="sidebar-menu toggle-others fixed">
+
+			<div class="sidebar-menu-inner">
+
+				<header class="logo-env">
+					<div class="logo">
+						<a href="/" class="logo-expanded">
+							<img class="logo-img" src="assets/imgs/emqlogo-green.png" alt="logo">
+							<span>Dashboard</span>
+						</a>
+						<a href="/" class="logo-collapsed"> <img class="logo-img"	src="assets/imgs/emqlogo-white.png" alt="logo"></a>
+					</div>
+					<div class="mobile-menu-toggle visible-xs">
+						<a href="#" data-toggle="user-info-menu"> <i class="glyphicon glyphicon-user"></i></a> 
+						<a href="#" data-toggle="mobile-menu"> <i class="glyphicon glyphicon-menu-hamburger"></i></a>
+					</div>
+				</header>
+
+				<ul id="main-menu" class="main-menu">
+     			<li module="overview">
+						<a href="/#/overview"> <i class="dash-icon dash-icon-overview"></i> <span class="title">Overview</span></a>
+					</li>
+     			<li module="alarms"><a href="/#/alarms"> <i
+     			        class="dash-icon dash-icon-alarms"></i> <span class="title">Alarms</span>
+     			</a></li>
+     			<li module="clients"><a href="/#/clients">
+     			        <i class="dash-icon dash-icon-clients"></i> <span class="title">Clients</span>
+     			</a></li>
+     			<li module="sessions"><a href="/#/sessions"> <i
+     			        class="dash-icon dash-icon-sessions"></i> <span class="title">Sessions</span>
+     			</a></li>
+     			<li module="topics"><a href="/#/topics"> <i
+     			        class="dash-icon dash-icon-topics"></i> <span class="title">Topics</span>
+     			</a></li>
+     			<li module="routes"><a href="/#/routes"> <i
+     			        class="dash-icon dash-icon-routes"></i> <span class="title">Routes</span>
+     			</a></li>
+     			<li module="subscriptions"><a href="/#/subscriptions"> <i
+     			        class="dash-icon dash-icon-subscriptions"></i> <span class="title">Subscriptions</span>
+     			</a></li>
+     			<li module="plugins"><a href="/#/plugins"> <i
+     			        class="dash-icon dash-icon-plugins"></i> <span class="title">Plugins</span>
+     			</a></li>
+     			<li module="websocket"><a href="/#/websocket"> <i
+     			        class="dash-icon dash-icon-websocket"></i> <span class="title">Websocket</span>
+     			</a></li>
+     			<li module="users"><a href="/#/users"> <i
+     			        class="dash-icon dash-icon-admins"></i> <span class="title">Admins</span>
+     			</a></li>
+     			<li module="http_api"><a href="/#/http_api"> <i
+     			        class="dash-icon dash-icon-http-api"></i> <span class="title">HTTP API</span>
+     			</a></li>
+				</ul>
+
+        </div> <!-- /.sidebar-menu-inner -->
+
+        </div> <!-- /.sidebar-menu -->
+        
+        <div class="main-content">
+        
+            <nav class="navbar user-info-navbar" role="navigation">
+            <!-- Left links for user info navbar -->
+            <ul class="user-info-menu left-links list-inline list-unstyled">
+                <li class="hidden-sm hidden-xs"><a href="#"
+                    data-toggle="sidebar"> <i class="glyphicon glyphicon-th-list"></i>
+                </a></li>
+            </ul>
+
+            <!-- Right links for user info navbar -->
+            <ul class="user-info-menu right-links list-inline list-unstyled">
+                <li><a>
+                <span id="current_node"> Localhost</span>
+                </a></li>
+                <li class="dropdown user-profile">
+                <a><img src="assets/imgs/user-4.png"
+                        alt="user-image" class="img-circle img-inline userpic-32"
+                        width="28" />
+                <span> <b id="current_user">Admin</b></span>
+                </a>
+                </li>
+                <li>
+                <a href="javascript:;" id="logout">
+                <span><i class="glyphicon glyphicon-lock"></i> Logout</span></a>
+                </li>
+            </ul>
+            </nav>
+
+            <!-- main center -->
+            <div id="main_center">
+
+							<div id="dashboard_overview" class="collapse">
+
+								<div class="row" id="overview_broker">
+									<div class="col-sm-12">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<h3 class="panel-title">Broker</h3>
+											</div>
+											<div class="panel-body">
+												<table class="table table-condensed">
+													<thead>
+														<tr>
+															<th>System Name</th>
+												      <th>Version</th>
+															<th>Uptime</th>
+									            <th>System Time</th>
+										        </tr>
+											    </thead>
+											    <tbody>
+										        <tr>
+									            <td>{{ sysdescr }}</td>
+									            <td>{{ version }}</td>
+									            <td>{{ uptime }}</td>
+									            <td>{{ datetime }}</td>
+										        </tr>
+											    </tbody>
+												</table>
+					            </div>
+						        </div>
+							    </div>
+								</div>
+
+								<div class="row" id="overview_nodes">
+							    <div class="col-sm-12">
+						        <div class="panel panel-default">
+					            <div class="panel-heading">
+				                <h3 class="panel-title">
+			                    Nodes (<em id="nodes_count">{{ nodes.length }}</em>)
+												</h3>
+							         </div>
+											 <div class="panel-body">
+												 <table class="table table-condensed">
+													 <thead>
+														 <tr>
+															 <th>Name</th>
+															 <th>Erlang/OTP Release</th>
+															 <th>Erlang Processes<br />(used/avaliable)</th>
+															 <th>CPU Info<br />(1load/5load/15load)</th>
+															 <th>Memory Info<br />(used/total)</th>
+															 <th>MaxFds</th>
+															 <th>ClusterStatus</th>
+														 </tr>
+													 </thead>
+													 <tbody>
+														 <tr v-for="node in nodes">
+															 <td>{{ node['name'] }}</td>
+															 <td>{{ node['otp_release'] }}</td>
+															 <td>{{ node['process_used'] }} / {{ node['process_available'] }}</td>
+															 <td>{{ node['load1'] }} / {{ node['load5'] }} / {{ node['load15'] }}</td>
+															 <td>{{ node['used_memory'] }} / {{ node['total_memory'] }}</td>
+															 <td>{{ node['max_fds'] }}</td>
+															 <td>
+																 <span v-show="node['cluster_status'] == 'Running'" class="badge badge-success">{{ node['cluster_status']}}</span>
+																 <span v-show="node['cluster_status'] == 'Stopped'" class="badge badge-danger"> {{ node['cluster_status']}}</span>
+																 <span v-show="node['cluster_status'] == 'Netsplit'" class="badge badge-danger"> {{ node['cluster_status']}}</span>
+															 </td>
+														 </tr>
+													 </tbody>
+												 </table>
+											 </div>
+										 </div>
+									 </div>
+								 </div>
+
+								 <div class="row" id="overview_stats">
+									 <div class="col-sm-12">
+										 <div class="panel panel-default">
+											 <div class="panel-heading">
+												 <h3 class="panel-title">Stats</h3>
+											 </div>
+											 <div class="panel-body">
+												 <div class="table-responsive" data-pattern="priority-columns"
+													 data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true"
+													 data-add-display-all-btn="true" data-add-focus-btn="true">
+													 <table v-if="stats" class="table table-condensed">
+														 <thead>
+															 <tr>
+																 <th v-for="stat in Object.keys( stats )">{{ stat }}</td>
+															 </tr>
+														 </thead>
+														 <tbody>
+															 <tr>
+																 <td v-for="stat in stats">{{ stat }}</td>
+															 </tr>
+														 </tbody>
+													 </table>
+												 </div>
+											 </div>
+										 </div>
+									 </div>
+								 </div>
+
+								 <div class="row" id="overview_metrics">
+									 <div class="col-sm-12">
+										 <div class="panel panel-default">
+											 <div class="panel-heading">
+												 <h3 class="panel-title">Metrics</h3>
+											 </div>
+											 <div class="panel-body">
+												 <div class="row">
+													 <div v-for="data_type in data_types" class="col-md-4">
+														 <table class="table table-striped table-condensed">
+															 <caption>{{data_type.title}}</caption>
+															 <tbody>
+																 <tr v-for="data in filter_metrics( data_type.filter )">
+																 	<td>{{ data.title }}</td>
+																 	<td class="ta-right">{{ data.value }}</td>
+																 </tr>
+															 </tbody>
+														 </table>
+													 </div>
+												 </div>
+											 </div>
+										 </div>
+									 </div>
+								 </div>
+							 
+								 <div class="row" id="overview_listeners">
+									 <div class="col-sm-12">
+										 <div class="panel panel-default">
+											 <div class="panel-heading">
+												 <h3 class="panel-title">
+													 Listeners (<em id="listeners_count">{{ listeners.length }}</em>)
+												 </h3>
+											 </div>
+											 <div class="panel-body">
+												 <table class="table table-condensed">
+													 <thead>
+														 <tr>
+															 <th>Protocol</th>
+															 <th>Listen On</th>
+															 <th>Max Clients</th>
+															 <th>Current Clients</th>
+														 </tr>
+													 </thead>
+													 <tbody>
+														 <tr v-for="listener in listeners">
+															 <td>{{ listener['protocol'] }}</td>
+															 <td>{{ listener['listen'] }}</td>
+															 <td>{{ listener['max_clients'] }}</td>
+															 <td>{{ listener['current_clients'] }}</td>
+														 </tr>
+													 </tbody>
+												 </table>
+											 </div>
+										 </div>
+									 </div>
+								 </div>
+							 </div>
+							 
+							 
+							 <div id="dashboard_plugins" class="collapse">
+								 
+								 <div class="panel panel-default" id="plugins_list">
+
+								 	<div class="panel-heading">
+								 		<h3 class="panel-title">All Plugins</h3>
+								   </div>
+
+								 	<div class="panel-body">
+
+								 		<div class="table-responsive" data-pattern="priority-columns"
+								 			data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true"
+								 			data-add-display-all-btn="true" data-add-focus-btn="true">
+
+								 			<table class="table table-hover">
+								 				<thead>
+								 					<tr>
+								 						<th>Name</th>
+								 						<th>Version</th>
+								 						<th>Description</th>
+								 						<th>Operation</th>
+								 						<th>status</th>
+								 					</tr>
+								 				</thead>
+								 				<tbody>
+								 					<tr v-for="plugin in plugins">
+								 						<td>{{ plugin.name}}</td>
+								 						<td>{{ plugin.version}}</td>
+								 						<td>{{ plugin.description}}</td>
+								 						<td>
+								 							<button type="button" class="btn btn-single btn-gray" @click="update(plugin, this)" v-bind:disabled="plugin.name == 'emq_dashboard'"> 
+								 								<template v-if="plugin.active==true">Stop</template>
+								 								<template v-else>Start</template>
+								 							</button>
+								 							<!-- 
+								 							<button type="button" class="btn btn-single" v-bind:class="{'btn-success': plugin.active ? true : false, 'btn-gray': plugin.active ? false : true}" @click="update(plugin, this)" v-bind:disabled="plugin.name == 'emq_dashboard'">                                       <template v-if="plugin.active==true">Enable</template>
+								 								<template v-else>Disable</template>
+								 							</button> 
+								 							-->
+								 						</td>
+								 						<td>
+								 							<span v-show="plugin.active == true" class="badge badge-success">Running</span>
+								 							<span v-show="plugin.active == false">Stopped</span>
+								 						</td>
+								 					</tr>
+								 				</tbody>
+								 			</table>
+								 		</div>
+								 	</div>
+								 </div>
+								 
+							 </div>
+							 
+							 
+							 <div id="dashboard_clients" class="collapse">
+								 
+								 <div class="panel panel-default" id="clients_list">
+
+								 	<div class="panel-heading">
+								 		<h3 class="panel-title">All Clients</h3>
+								 	</div>
+
+								 	<div class="panel-body">
+
+								 		<div class="row" style="margin-bottom: 5px;">
+			
+								 			<div class="col-sm-12">
+								 				<form role="form" class="form-inline pull-right" onsubmit="return false;">
+								 					<div class="form-group">
+								 						<input type="text" class="form-control" size="25" v-model="clientKey"
+								 							placeholder="ClientId" id="user_key" @change="search"/>
+								 					</div>
+								 					<div class="form-group">
+								 						<button type="button" class="btn btn-success btn-single" @click="search">Search</button>
+								 					</div>
+								 				</form>
+								 			</div>
+			
+								 		</div>
+			
+								 		<div class="table-responsive" data-pattern="priority-columns"
+								 			data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true"
+								 			data-add-display-all-btn="true" data-add-focus-btn="true">
+			
+								 			<table class="table table-hover">
+								 				<thead>
+								 					<tr>
+								 						<th>ClientId</th>
+								 						<th>Username</th>
+								 						<th>IPAddr</th>
+								 						<th>Port</th>
+								 						<th>CleanSess</th>
+								 						<th>ProtoVer</th>
+								 						<th>Keepalive(s)</th>
+								 						<th>SendMsg</th>
+								 						<th>RecvMsg</th>
+								 						<th>ConnectedAt</th>
+								 					</tr>
+								 				</thead>
+								 				<tbody>
+								 					<tr v-for="client in clients">
+								 						<td>{{ client.clientId }}</td>
+								 						<td>{{ client.username }}</td>
+								 						<td>{{ client.ipaddress }}</td>
+								 						<td>{{ client.port }}</td>
+								 						<td>{{ client.clean_sess }}</td>
+								 						<td>{{ client.proto_ver }}</td>
+								 						<td>{{ client.keepalive }}</td>
+								 						<td>{{ client.send_msg }}</td>
+								 						<td>{{ client.recv_msg }}</td>
+								 						<td>{{ client.connected_at }}</td>
+								 					</tr>
+								 				</tbody>
+								 			</table>
+			
+								 		</div>
+		
+								 	</div>
+
+								 	<div class="row">
+		
+								 		<div class="col-sm-6">
+								 			showing 
+								 			<span id="clients_count_start">{{ pageInfo.offsetting() }}</span> - 
+								 			<span id="clients_count_end">{{ pageInfo.endNum() }}</span> of 
+								 			<span id="clients_count_all">{{ pageInfo.totalNum }}</span> records
+								 		</div>
+								 		<div class="col-sm-6">
+								 			<div class="pull-right" id="pagination">
+								 				<template v-if="pageInfo.currPage <= 1">
+								 					<button type="button" class="btn btn-white disabled previous">Previous</button>
+								 				</template>
+								 				<template v-else>
+								 					<button type="button" class="btn btn-white previous" @click="go(pageInfo.currPage-1)">Previous</button>
+								 				</template>
+								 				<div class="btn-group">
+								 					<button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+								 						records per page <strong id="page_size">{{ pageInfo.pageSize }}</strong> <span class="caret"></span>
+								 					</button>
+								 					<ul class="dropdown-menu dropdown-white" role="menu">
+								 						<li><a href="javascript:;" @click="changeSize(100);">100</a></li>
+								 						<li><a href="javascript:;" @click="changeSize(200);">200</a></li>
+								 						<li><a href="javascript:;" @click="changeSize(500);">500</a></li>
+								 						<li><a href="javascript:;" @click="changeSize(1000);">1000</a></li>
+								 					</ul>
+								 				</div>
+								 				<template v-if="pageInfo.currPage >= pageInfo.totalPage">
+								 					<button type="button" class="btn btn-white disabled next">Next</button>
+								 				</template>
+								 				<template v-else>
+								 					<button type="button" class="btn btn-white next" @click="go(pageInfo.currPage+1)">Next</button>
+								 				</template>
+								 			</div>
+								 		</div>
+								 	</div>
+								 </div>
+								 
+							 </div>
+							 
+							 
+               <div id="dashboard_sessions" class="collapse">
+               	
+								<div class="panel panel-default" id="sessions_list">
+
+									<div class="panel-heading">
+										<h3 class="panel-title">All Sessions</h3>
+									</div>
+
+									<div class="panel-body">
+	
+										<div class="row" style="margin-bottom: 5px;">
+											<div class="col-sm-12">
+												<form role="form" class="form-inline pull-right" onsubmit="return false;">
+													<div class="form-group">
+														<input type="text" class="form-control" size="25" v-model="clientKey"
+															placeholder="ClientId" id="user_key" @change="search"/>
+													</div>
+													<div class="form-group">
+														<button type="button" class="btn btn-success btn-single" @click="search">Search</button>
+													</div>
+												</form>
+											</div>
+										</div>
+
+										<div class="table-responsive" data-pattern="priority-columns"
+											data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true"
+											data-add-display-all-btn="true" data-add-focus-btn="true">
+											<table class="table table-hover">
+												<thead>
+													<tr>
+														<th>ClientId</th>
+														<th>CleanSess</th>
+														<th>MaxInflight</th>
+														<th>Inflight</th>
+														<th>MQueueLen</th>
+														<th>MQueueDropped</th>
+														<th>AwaitingRel</th>
+														<th>DeliverMsg</th>
+														<th>EnqueueMsg</th>
+														<th>CreatedAt</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr v-for="session in sessions">
+														<td>{{ session.clientId }}</td>
+														<td>{{ session.clean_sess }}</td>
+														<td>{{ session.max_inflight }}</td>
+														<td>{{ session.inflight_len }}</td>
+														<td>{{ session.mqueue_len }}</td>
+														<td>{{ session.mqueue_dropped }}</td>
+														<td>{{ session.awaiting_rel_len }}</td>
+														<td>{{ session.deliver_msg }}</td>
+														<td>{{ session.enqueue_msg }}</td>
+														<td>{{ session.created_at }}</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+		
+										<div class="row">
+											<div class="col-sm-6">showing 
+												<span id="sessions_count_start">{{ pageInfo.offsetting() }}</span> - 
+												<span id="sessions_count_end">{{ pageInfo.endNum() }}</span> of 
+												<span id="sessions_count_all">{{ pageInfo.totalNum }}</span> records
+											</div>
+											<div class="col-sm-6">
+												<div class="pull-right" id="pagination">
+													<template v-if="pageInfo.currPage <= 1">
+														<button type="button" class="btn btn-white disabled previous">Previous</button>
+													</template>
+													<template v-else>
+														<button type="button" class="btn btn-white previous" @click="go(pageInfo.currPage-1)">Previous</button>
+													</template>
+													<div class="btn-group">
+														<button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+															records per page <strong id="page_size">{{ pageInfo.pageSize }}</strong> <span class="caret"></span>
+														</button>
+														<ul class="dropdown-menu dropdown-white" role="menu">
+															<li><a href="javascript:;" @click="changeSize(100);">100</a></li>
+															<li><a href="javascript:;" @click="changeSize(200);">200</a></li>
+															<li><a href="javascript:;" @click="changeSize(500);">500</a></li>
+															<li><a href="javascript:;" @click="changeSize(1000);">1000</a></li>
+														</ul>
+													</div>
+													<template v-if="pageInfo.currPage >= pageInfo.totalPage">
+														<button type="button" class="btn btn-white disabled next">Next</button>
+													</template>
+													<template v-else>
+														<button type="button" class="btn btn-white next" @click="go(pageInfo.currPage+1)">Next</button>
+													 </template>
+												 </div>
+											 </div>
+										 </div>
+									</div>
+								</div>
+								
+               </div>
+							 
+							 
+               <div id="dashboard_topics" class="collapse">
+								 
+								 <div class="panel panel-default" id="topics_list">
+
+								 	<div class="panel-heading">
+								 		<h3 class="panel-title">All Topics </h3>
+								 	</div>
+
+								 	<div class="panel-body">
+
+								 		<div class="row" style="margin-bottom: 5px;">
+								 			<div class="col-sm-12">
+								 				<form role="form" class="form-inline pull-right" onsubmit="return false;">
+								 					<div class="form-group">
+								 						<input type="text" class="form-control" size="25" v-model="topic"
+								 							placeholder="Topic" id="topic_key" @change="search"/>
+								 					</div>
+								 					<div class="form-group">
+								 						<button type="button" class="btn btn-success btn-single" @click="search">Search</button>
+								 					</div>
+								 				</form>
+								 			</div>
+								 		</div>
+		
+								 		<div class="table-responsive" data-pattern="priority-columns"
+								 			data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true"
+								 			data-add-display-all-btn="true" data-add-focus-btn="true">
+
+								 			<table class="table table-hover">
+								 				<thead>
+								 					<tr>
+								 						<th>Topic</th>
+								 						<th>SubTopicCount</th>
+								 					</tr>
+								 				</thead>
+								 				<tbody>
+								 					<tr v-for="topic in topics">
+								 						<td>{{ topic.topic }}</td>
+								 						<td> <a href="/#/subscriptions" @click="topic_sub(topic.topic)">{{ topic.count }}</a></td>
+								 					</tr>
+								 				</tbody>
+								 			</table>
+								 		</div>
+       
+								 		<div class="row">
+								 			<div class="col-sm-6">showing 
+								 				<span>{{ pageInfo.offsetting() }}</span> - 
+								 				<span>{{ pageInfo.endNum() }}</span> of 
+								 				<span>{{ pageInfo.totalNum }}</span> records
+								 			</div>
+								 			<div class="col-sm-6">
+								 				<div class="pull-right" id="pagination">
+								 					<template v-if="pageInfo.currPage <= 1">
+								 						<button type="button" class="btn btn-white disabled previous">Previous</button>
+								 					</template>
+								 					<template v-else>
+								 						<button type="button" class="btn btn-white previous" @click="go(pageInfo.currPage-1)">Previous</button>
+								 					</template>
+								 					<div class="btn-group">
+								 						<button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+								 							records per page <strong id="page_size">{{ pageInfo.pageSize }}</strong> <span class="caret"></span>
+								 						</button>
+								 						<ul class="dropdown-menu dropdown-white" role="menu">
+								 							<li><a href="javascript:;" @click="changeSize(100);">100</a></li>
+								 							<li><a href="javascript:;" @click="changeSize(200);">200</a></li>
+								 							<li><a href="javascript:;" @click="changeSize(500);">500</a></li>
+								 							<li><a href="javascript:;" @click="changeSize(1000);">1000</a></li>
+								 						</ul>
+								 					</div>
+								 					<template v-if="pageInfo.currPage >= pageInfo.totalPage">
+								 						<button type="button" class="btn btn-white disabled next">Next</button>
+								 					</template>
+								 					<template v-else>
+								 						<button type="button" class="btn btn-white next" @click="go(pageInfo.currPage+1)">Next</button>
+								 					</template>
+								 				 </div>
+								 			 </div>
+								 		 </div>
+								 	 </div>
+								 </div>
+								 
+               </div>
+							 
+               <div id="dashboard_routes" class="collapse">
+								 
+								 <div class="panel panel-default" id="routes_list">
+								 	<div class="panel-heading">
+								 		<h3 class="panel-title">All Routes</h3>
+								 	</div>
+								 	<div class="panel-body">
+
+								 		<div class="row" style="margin-bottom: 5px;">
+								 			<div class="col-sm-12">
+								 				<form role="form" class="form-inline pull-right" onsubmit="return false;">
+								 					<div class="form-group">
+								 						<input type="text" class="form-control" size="25" v-model="topic"
+								 							placeholder="Topic" id="topic_key" @change="search"/>
+								 					</div>
+								 					<div class="form-group">
+								 						<button type="button" class="btn btn-success btn-single" @click="search">Search</button>
+								 					</div>
+								 				</form>
+								 			</div>
+								 		</div>
+		
+								 		<div class="table-responsive" data-pattern="priority-columns"
+								 			data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true"
+								 			data-add-display-all-btn="true" data-add-focus-btn="true">
+
+								 			<table class="table table-hover">
+								 				<thead>
+								 					<tr>
+								 						<th>Topic</th>
+								 						<th>Node</th>
+								 					</tr>
+								 				</thead>
+								 				<tbody>
+								 					<tr v-for="route in routes">
+								 						<td>{{ route.topic }}</td>
+								 						<td>{{ route.node }}</td>
+								 					</tr>
+								 				</tbody>
+								 			</table>
+
+								 		</div>
+        
+								 		<div class="row">
+								 			<div class="col-sm-6">showing 
+								 				<span id="routes_count_start">{{ pageInfo.offsetting() }}</span> - 
+								 				<span id="routes_count_end">{{ pageInfo.endNum() }}</span> of 
+								 				<span id="routes_count_all">{{ pageInfo.totalNum }}</span> records
+								 			</div>
+								 			<div class="col-sm-6">
+								 				<div class="pull-right" id="pagination">
+								 					<template v-if="pageInfo.currPage <= 1">
+								 						<button type="button" class="btn btn-white disabled previous">Previous</button>
+								 					</template>
+								 					<template v-else>
+								 						<button type="button" class="btn btn-white previous" @click="go(pageInfo.currPage-1)">Previous</button>
+								 					</template>
+								 					<div class="btn-group">
+								 						<button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+								 							records per page <strong id="page_size">{{ pageInfo.pageSize }}</strong> <span class="caret"></span>
+								 						</button>
+								 						<ul class="dropdown-menu dropdown-white" role="menu">
+								 							<li><a href="javascript:;" @click="changeSize(100);">100</a></li>
+								 							<li><a href="javascript:;" @click="changeSize(200);">200</a></li>
+								 							<li><a href="javascript:;" @click="changeSize(500);">500</a></li>
+								 							<li><a href="javascript:;" @click="changeSize(1000);">1000</a></li>
+								 						</ul>
+								 					</div>
+								 					<template v-if="pageInfo.currPage >= pageInfo.totalPage">
+								 						<button type="button" class="btn btn-white disabled next">Next</button>
+								 					</template>
+								 					<template v-else>
+								 						<button type="button" class="btn btn-white next" @click="go(pageInfo.currPage+1)">Next</button>
+								 					</template>
+								 				</div>
+								 			</div>
+								 		</div>
+								 	</div>
+								 </div>
+								
+               </div>
+							 
+							 							 
+               <div id="dashboard_subscriptions" class="collapse">
+               	
+								 <div class="panel panel-default" id="subscriptions_list">
+								 	<div class="panel-heading">
+								 		<h3 class="panel-title">All Subscriptions</h3>
+								 	</div>
+								 	<div class="panel-body">
+								 		<div class="row" style="margin-bottom: 5px;">
+								 			<div class="col-sm-12">
+								 				<form role="form" class="form-inline pull-right" onsubmit="return false;">
+								 					<div class="form-group">
+								 						<input type="text" class="form-control" size="25" v-model="clientKey"
+								 						placeholder="ClientId / Topic" id="user_key" @change="search"/>
+								 					</div>
+
+								 					<div class="form-group">
+								 						<button type="button" class="btn btn-success btn-single" @click="search">Search</button>
+								 					</div>
+								 				</form>
+								 			</div>
+								 		</div>
+
+								 		<div class="table-responsive" data-pattern="priority-columns"
+								 			data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true"
+								 			data-add-display-all-btn="true" data-add-focus-btn="true">
+
+								 			<table class="table table-hover">
+								 				<thead>
+								 					<tr>
+								 						<th>ClientId</th>
+								 						<th>Topic</th>
+								 						<th>QoS</th>
+								 					</tr>
+								 				</thead>
+								 				<tbody>
+								 					<tr v-for="subscription in subscriptions">
+								 						<td>{{ subscription.clientid }}</td>
+								 						<td>{{ subscription.topic }}</td>
+								 						<td>{{ subscription.qos }}</td>
+								 					</tr>
+								 				</tbody>
+								 			</table>
+
+								 		</div>
+        
+								 		<div class="row">
+								 			<div class="col-sm-6">showing 
+								 				<span id="subscriptions_count_start">{{ pageInfo.offsetting() }}</span> - 
+								 				<span id="subscriptions_count_end">{{ pageInfo.endNum() }}</span> of 
+								 				<span id="subscriptions_count_all">{{ pageInfo.totalNum }}</span> records
+								 			</div>
+								 			<div class="col-sm-6">
+								 				<div class="pull-right" id="pagination">
+								 					<template v-if="pageInfo.currPage <= 1">
+								 						<button type="button" class="btn btn-white disabled previous">Previous</button>
+								 					</template>
+								 					<template v-else>
+								 						<button type="button" class="btn btn-white previous" @click="go(pageInfo.currPage-1)">Previous</button>
+								 					</template>
+								 					<div class="btn-group">
+								 						<button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+								 							records per page <strong id="page_size">{{ pageInfo.pageSize }}</strong> <span class="caret"></span>
+								 						</button>
+								 						<ul class="dropdown-menu dropdown-white" role="menu">
+								 							<li><a href="javascript:;" @click="changeSize(100);">100</a></li>
+								 							<li><a href="javascript:;" @click="changeSize(200);">200</a></li>
+								 							<li><a href="javascript:;" @click="changeSize(500);">500</a></li>
+								 							<li><a href="javascript:;" @click="changeSize(1000);">1000</a></li>
+								 						</ul>
+								 					</div>
+								 					<template v-if="pageInfo.currPage >= pageInfo.totalPage">
+								 						<button type="button" class="btn btn-white disabled next">Next</button>
+								 					</template>
+								 					<template v-else>
+								 						<button type="button" class="btn btn-white next" @click="go(pageInfo.currPage+1)">Next</button>
+								 					</template>
+								 				</div>
+								 			</div>
+								 		</div>
+
+								 	</div>
+	
+								 </div>
+								 
+               </div>
+							 
+							 
+               <div id="dashboard_alarms" class="collapse">
+               	
+								 <div class="panel panel-default" id="alarms_list">
+								 	<div class="panel-heading">
+								 		<h3 class="panel-title">All Alarms</h3>
+								 	</div>
+								 	<div class="panel-body">
+								 		<div class="table-responsive" data-pattern="priority-columns"
+								 			data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true"
+								 			data-add-display-all-btn="true" data-add-focus-btn="true">
+			
+								 			<table class="table table-hover">
+								 				<thead>
+								 					<tr>
+								 						<th>Severity</th>
+								 						<th>Title</th>
+								 						<th>Summary</th>
+								 						<th>Occurred_at</th>
+								 					</tr>
+								 				</thead>
+								 				<tbody>
+								 					<tr v-for="alarm in alarms">
+								 						<td>
+								 							<span v-show="alarm.severity == 'critical'" class="badge badge-danger">{{ alarm.severity}}</span>
+								 							<span v-show="alarm.severity == 'warning'" class="badge badge-warning"> {{ alarm.severity}}</span>
+								 							<span v-show="alarm.severity == 'error'" class="badge badge-info">{{ alarm.severity}}</span>
+								 						</td>
+								 						<td>{{ alarm.title}}</td>
+								 						<td>{{ alarm.summary}}</td>
+								 						<td>{{ alarm.occurred_at}}</td>
+								 					</tr>
+								 				</tbody>
+								 			</table>
+								 		</div>
+								 	</div>
+								 </div>
+								
+               </div>
+							 
+							 
+							 
+               <div id="dashboard_websocket" class="collapse">
+								 <div class="panel panel-default">
+
+								 	<div class="row">
+								 		<div class="col-sm-6">
+								 			<div class="panel panel-default">
+								 				<div class="panel-heading">
+								 					<h3 class="panel-title">Connection</h3>
+								 				</div>
+								 				<div class="panel-body">
+					
+								 					<form role="form">
+						
+								 						<div class="row">
+								 							<div class="col-sm-4">
+								 								<div class="form-group">
+								 									<label for="host">Host:</label> 
+								 									<input type="text" class="form-control" id="host" placeholder="Host IP"
+								 										v-model="cInfo.host">
+								 								</div>
+								 							</div>
+								 							<div class="col-sm-4">
+								 								<div class="form-group">
+								 									<label for="port">Port:</label> 
+								 									<input type="text" class="form-control" id="port" placeholder="Port" v-model="cInfo.port">
+								 								</div>
+								 							</div>
+								 							<div class="col-sm-4">
+								 								<div class="form-group">
+								 									<label for="client_id">Client ID:</label> 
+								 									<input type="text" class="form-control" id="client_id" placeholder="Client ID" v-model="cInfo.clientId">
+								 								</div>
+								 							</div>
+								 						</div>
+
+								 						<div class="row">
+								 							<div class="col-sm-4">
+								 								<div class="form-group">
+								 									<label for="user_name">User Name:</label>
+								 									<input type="text" class="form-control" id="user_name" placeholder="User Name" v-model="cInfo.userName">
+								 								</div>
+								 							</div>
+								 							<div class="col-sm-4">
+								 								<div class="form-group">
+								 									<label for="password">Password:</label> 
+								 									<input type="password" class="form-control" id="password" placeholder="Password" v-model="cInfo.password">
+								 								</div>
+								 							</div>
+								 							<div class="col-sm-4">
+								 								<div class="form-group">
+								 									<label for="keep_alive">Keep Alive:</label> 
+								 									<input type="text"
+								 										class="form-control" id="keep_alive"
+								 										placeholder="Keep Alive" v-model="cInfo.keepAlive">
+								 								</div>
+								 							</div>
+								 							<div class="col-sm-12">
+								 								<div class="form-group">
+								 									<label class="checkbox-inline">
+								 										<input type="checkbox" value="1" id="clean_session"  v-model="cInfo.cleanSession" checked/>Clean Session 
+								 									</label>
+								 								</div>
+								 							</div>
+								 							<div class="col-sm-12">
+								 								<div class="form-group">
+								 									<label class="checkbox-inline">
+								 										<input type="checkbox" value="1" id="use_ssl" v-model="cInfo.useSSL" @change="sslPort"/>SSL 
+								 									</label>
+								 								</div>
+								 							</div>
+
+								 						</div>
+                    
+								 						<div class="row">
+                    
+								 							<div class="col-sm-12">
+								 								<div class="form-group">
+								                 	<template v-if="connState == false">
+								 										<button type="button" class="btn btn-success btn-single" id="connect_btn" @click="connect">Connect</button>
+								 										<button type="button" class="btn btn-gray btn-single disabled" id="disconnect_btn">Disconnect</button>
+								 									</template>
+								 									<template v-else>
+								 										<button type="button" class="btn btn-gray btn-single disabled" id="connect_btn">Connect</button>
+								 										<button type="button" class="btn btn-success btn-single" id="disconnect_btn" @click="disconnect">Disconnect</button>
+								 									</template>
+								 								</div>
+								 								<div class="form-group">
+								 									<label class="cbr-inline">Current State: 
+								 										<template v-if="connState == false">
+								 											<strong id="connect_state" class="text-danger">DISCONNECTED</strong>
+								 										</template>
+								 										<template v-else>
+								 											<strong id="connect_state" class="text-success">CONNECTED</strong>
+								 										</template>
+								 									</label>
+								 								</div>
+								 							</div>
+							
+								 						</div>
+
+								 					</form>
+
+								 				</div>
+								 			</div>
+								 		</div>
+	
+								 		<div class="col-sm-6">
+								 			<div class="panel panel-default">
+								       	<div class="panel-heading">
+								         	<h3 class="panel-title">Receive Message</h3>
+								 				</div>
+								 				<div class="panel-body" style="overflow: auto;max-height: 300px;">
+								 					<div v-for="message in reverseReceiveMsgs">
+								 						<cite>{{ message.arrived_at}}</cite>
+								             --(Q{{message.qos}},
+								 						<template v-if="message.retained">R1</template><template v-else>R0</template>, 
+								 						<template v-if="message.duplicate">D1</template><template v-else>D0</template>, 
+								 						Topic={{message.destinationName}}, Payload={{message.msgString}})
+								 					</div>
+								 				</div>
+								 			</div>
+								 		</div>
+
+								 	</div>
+
+								 </div>
+
+								 <div class="panel panel-default">
+
+								 	<div class="row">
+								 		<div class="col-sm-6">
+								 			<div class="panel panel-default">
+								 				<div class="panel-heading">
+								 					<h3 class="panel-title">Subscription</h3>
+								 				</div>
+								 				<div class="panel-body">
+								 					<form role="form">
+								 						<div class="row">
+								 							<div class="col-sm-6">
+								 								<div class="form-group">
+								 									<label for="subscription">Subscription:</label> 
+								 									<input type="text"
+								 										class="form-control"
+								                     placeholder="Subscription" value="world" v-model="subInfo.topic">
+								 								</div>
+								 							</div>
+								 							<div class="col-sm-6">
+								 								<div class="form-group">
+								 									<label for="qos_2">QoS:</label>
+								 									<select class="form-control" id="qos_2" v-model="subInfo.qos">
+								 										<option value="0">0</option>
+								 										<option value="1">1</option>
+								 										<option value="2">2</option>
+								 									</select>
+								 								</div>
+								 							</div>
+                    
+								 						</div>
+                    
+								 						<div class="row">
+                    
+								 							<div class="col-sm-12">
+								 								<div class="form-group">
+								 									<button type="button" class="btn btn-success btn-single" @click="subscribe()">Subscribe</button>
+								 									<button type="button" class="btn btn-success btn-single" @click="unsubscribe()">Unsubscribe</button>
+								 								</div>
+								 							</div>
+                    
+								 						</div>
+
+								 					</form>
+
+								 				</div>
+								 			</div>
+								 		</div>
+    
+								 		<div class="col-sm-6">
+   
+								 			<div class="panel panel-default">
+								 				<div class="panel-heading">
+								 					<h3 class="panel-title">Subscriptions List</h3>
+								 				</div>
+								 				<div class="panel-body" style="overflow: auto;max-height: 200px;">
+								 					<div v-for="sub in subscriptions"><cite>{{ sub.time }}</cite>( QoS: {{ sub.qos }} ) -- {{ sub.topic }}</div>
+								 				</div>
+								 			</div>
+				
+								 		</div>
+			
+								 	</div>
+
+								 </div>
+
+								 <div class="panel panel-default">
+								 	<div class="row">
+
+								 		<div class="col-sm-6">
+								 			<div class="panel panel-default">
+								 				<div class="panel-heading">
+								 					<h3 class="panel-title">Send Message</h3>
+								 				</div>
+								 				<div class="panel-body">
+					
+								 					<form role="form">
+
+								 						<div class="row">
+								 							<div class="col-sm-12">
+								 								<div class="form-group">
+								 									<label for="topic">Topic:</label> 
+								 									<input type="text"
+								 										class="form-control" id="topic"
+								 										placeholder="Topic" value="world" v-model="sendInfo.topic">
+								 								</div>
+								 							</div>
+								 						</div>
+                    
+								 						<div class="row">
+                    
+								 							<div class="col-sm-6">
+								 								<div class="form-group">
+								 									<label for="message">Message:</label> 
+								 									<input type="text"
+								 										class="form-control" id="message"
+								 										placeholder="Message" value="Hello world!" v-model="sendInfo.text" />
+								 								</div>
+								 							</div>
+								 							<div class="col-sm-6">
+								 								<div class="form-group">
+								 									<label for="qos_3">QoS:</label>
+								 									<select class="form-control" id="qos_3" v-model="sendInfo.qos">
+								 										<option value="0">0</option>
+								 										<option value="1">1</option>
+								 										<option value="2">2</option>
+								 									</select>
+								 								</div>
+								 							</div>
+								 							<div class="col-sm-12">
+								 								<div class="form-group">
+								 									<label class="checkbox-inline">
+								 										<input type="checkbox" value="1" id="retained" v-model="sendInfo.retained" checked/>Retained 
+								 									</label>
+								 								</div>
+								 							</div>
+                    
+								 						</div>
+                    
+								 						<div class="row">
+                    
+								 							<div class="col-sm-12">
+								 								<div class="form-group">
+								 									<button type="button" class="btn btn-success btn-single" @click="sendMessage()">Send</button>
+								 								</div>
+								 							</div>
+                    
+								 						</div>
+
+								 					</form>
+
+								 				</div>
+								 			</div>
+								 		</div>
+    
+								     <div class="col-sm-6">
+								 			<div class="panel panel-default">
+								 				<div class="panel-heading">
+								 					<h3 class="panel-title">Send Message List</h3>
+								 				</div>
+								 				<div class="panel-body" style="overflow: auto;max-height: 230px;">
+								 					<div v-for="message in sendMsgs"><cite>{{ message.time }}</cite>( QoS: {{ message.qos }}, Retained: {{ message.retained }} ) -- {{ message.text }}</div>
+								 				</div>
+								 			</div>
+								 		</div>
+								 	</div>
+								 </div>
+               </div>
+							 
+							 <!-- --------------------------------------------------------------------- -->
+							 <!-- USER -->
+							 <!-- --------------------------------------------------------------------- -->
+							 
+               <div id="dashboard_users" class="collapse">
+								 
+								 <div class="panel panel-default" id="users_list">
+								 	<div class="panel-heading">
+								 		<h3 class="panel-title">
+								 			All Users (<em>{{ users.length }}</em>)
+								 		</h3>
+								 	</div>
+								 	<div class="panel-body btn-toolbar">
+								   	<div class="btn-group focus-btn-group">
+								 			<button class="btn btn-success btn-sm" @click="add()">
+								 				<span class="sog-icon sog-icon-add"></span> Add User
+								 			</button>
+								 		</div>
+								 	</div>
+								 	<table class="table table-model-2 table-hover">
+								 		<thead>
+								     	<tr>
+								 				<th>#</th>
+								 				<th>Name</th>
+								 				<th>Remark</th>
+								 				<th>Operation</th>
+								 			</tr>
+								 		</thead>
+								 		<tbody>
+								 			<tr v-for="user in users">
+								 				<td>{{ i }}</td>
+								 				<td>{{ user.name }}</td>
+								 				<td>{{ user.tag }}</td>
+								 				<td>
+								 					<button @click="edit( user )" class="btn btn-success btn-sm btn-icon icon-left">Edit</button>
+								 					<button @click="del( user )" class="btn btn-danger btn-sm btn-icon icon-left">Delete</button>
+								 				</td>
+								 			</tr>
+								 		</tbody>
+								 	</table>
+								 </div>
+								 
+								 
+								 <!-- Modal Confirm -->
+								 <div class="modal fade" id="modal_confirm_del_user" data-backdrop="static">
+								 	<div class="modal-dialog">
+								 		<div class="modal-content">
+								 			<div class="modal-header">
+								 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								 				<h4 class="modal-title">Confirm Deletion</h4>
+								 			</div>
+								 			<div class="modal-body">
+								 				<input type="hidden" id="user_del_name" v-model="user.name">
+								 				Are you sure? <br>
+								 				This object cannot be recovered after deletion.
+								 			</div>
+								 			<div class="modal-footer">
+								 				<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+								 				<button type="button" class="btn btn-danger" @click="submit_remove_user()">Delete</button>
+								 			</div>
+								 		</div>
+								 	</div>
+								 </div>
+
+								 <div class="modal fade" id="modal_user_add" data-backdrop="static">
+								 	<div class="modal-dialog">
+								 		<div class="modal-content">
+								 			<div class="modal-header">
+								 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								 				<h4 class="modal-title">User Add</h4>
+								 			</div>
+								 			<div class="modal-body">
+								 				<div class="row">
+								 					<div class="col-md-12">
+								 						<div class="form-group">
+								 							<label for="user_add_name" class="control-label">Name</label>
+								 							<input type="text" class="form-control" v-model="user.name"	placeholder="Name">
+								 						</div>
+								 					</div>
+								 				</div>
+								 				<div class="row">
+								 					<div class="col-md-12">
+								 						<div class="form-group">
+								 							<label for="user_add_pwd" class="control-label">Password</label>
+								 							<input type="password" class="form-control" v-model="user.password" placeholder="Password">
+								 						</div>
+								 					</div>
+								 				</div>
+								 				<div class="row">
+								 					<div class="col-md-12">
+								 						<div class="form-group">
+								 							<input type="password" class="form-control" v-model="user.password2" placeholder="Password">
+								 						</div>
+								 					</div>
+								 				</div>
+								 				<div class="row">
+								 					<div class="col-md-12">
+								 						<div class="form-group">
+								 							<label for="user_add_remark" class="control-label">Remark</label>
+								 							<input type="text" class="form-control" v-model="user.tags" placeholder="Remark">
+								 						</div>
+								 					</div>
+								 				</div>
+								 			</div>
+								 			<div class="modal-footer">
+								 				<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+								 				<button type="button" class="btn btn-success" @click="submit_add_user()">Save</button>
+								 			</div>
+								 		</div>
+								 	</div>
+								 </div>
+
+								 <div class="modal fade" id="modal_user_edit" data-backdrop="static">
+								 	<div class="modal-dialog">
+								 		<div class="modal-content">
+								 			<div class="modal-header">
+								 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								 				<h4 class="modal-title">User Edit</h4>
+								 			</div>
+								 			<div class="modal-body">
+								 				<div class="row">
+								 					<div class="col-md-12">
+								 						<div class="form-group">
+								 							<label for="user_edit_name" class="control-label">Name</label>
+								 							<input type="text" class="form-control" v-model="user.name" placeholder="Name" disabled="disabled">
+								 						</div>
+								 					</div>
+								 				</div>
+								 				<div class="row">
+								 					<div class="col-md-12">
+								 						<div class="form-group">
+								 							<label for="user_edit_pwd" class="control-label">Password</label>
+								 							<input type="password" class="form-control" v-model="user.password" placeholder="Password">
+								 						</div>
+								 					</div>
+								 				</div>
+								 				<div class="row">
+								 					<div class="col-md-12">
+								 						<div class="form-group">
+								 							<input type="password" class="form-control" v-model="user.password2" placeholder="Password"/>
+								 						</div>
+								 					</div>
+								 				</div>
+								 				<div class="row">
+								 					<div class="col-md-12">
+								 						<div class="form-group">
+								 							<label for="user_edit_remark" class="control-label">Remark</label>
+								 							<input type="text" class="form-control" id="user_edit_remark" v-model="user.tags" placeholder="Remark"/>
+								 						</div>
+								 					</div>
+								 				</div>
+								 			</div>
+								 			<div class="modal-footer">
+								 				<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+								 				<button type="button" class="btn btn-success" @click="submit_update_user()">Edit</button>
+								 			</div>
+								 		</div>
+								 	</div>
+								 </div>
+								 
+               </div>
+							 
+							 
+               <div id="dashboard_http_api" class="collapse">
+               	
+								 <div class="row">
+
+								 	<div class="col-md-12">
+								 		<h2>HTTP API</h2>
+								 		<div class="vspacer v3"></div>
+								 	</div>
+
+								 	<div class="col-md-12">
+
+								 		<!-- Flat panel -->
+								 		<div class="panel panel-default">
+			
+								 			<div class="panel-heading">
+								 				<h3 class="panel-title">Introduction</h3>
+								 			</div>
+
+								 			<div class="panel-body">
+
+								 				<p class="ta-left leading">Apart from this help page, all URIs
+								 					will serve only resources of type application/json, and will
+								 					require HTTP basic authentication. The default user is admin/admin.
+								 				</p>
+								 				<p class="ta-left leading">The emqttd_dashboard plugin provides
+								 					a web management console. The Dashboard helps monitor broker's running status,
+								 					statistics and metrics of MQTT packets.
+								 				</p>
+								 			</div>
+								 		</div>
+
+								 	</div>
+
+								 	<div class="col-md-12">
+
+								 		<div class="panel panel-default">
+								 			<div class="panel-heading">
+								 				<h3 class="panel-title">Reference</h3>
+								 			</div>
+
+								 			<table class="table responsive">
+								 				<thead>
+								 					<tr>
+								 						<th>GET</th>
+								 						<th>POST</th>
+								 						<th>Path</th>
+								 						<th>Description</th>
+								 					</tr>
+								 				</thead>
+	
+								 				<tbody>
+								 					<tr>
+								 						<td>Y</td>
+								 						<td>Y</td>
+								 						<td><a href="/api/stats" target="_blank">/api/stats </a></td>
+								 						<td>The Statistics of Clients, Sessions, Topics and Subscriptions</td>
+								 					</tr>
+								 					<tr>
+								 						<td>Y</td>
+								 						<td>Y</td>
+								 						<td><a href="/api/nodes" target="_blank">/api/nodes</a></td>
+								 						<td>List of clustered nodes</td>
+								 					</tr>
+								 					<tr>
+								 						<td>Y</td>
+								 						<td>Y</td>
+								 						<td><a href="/api/metrics" target="_blank">/api/metrics</a></td>
+								 						<td>The broker metrics</td>
+								 					</tr>
+								 					<tr>
+								 						<td>Y</td>
+								 						<td>Y</td>
+								 						<td><a href="/api/listeners" target="_blank">/api/listeners</a></td>
+								 						<td>List of all TCP listeners</td>
+								 					</tr>
+								 					<tr>
+								 						<td>Y</td>
+								 						<td>Y</td>
+								 						<td><a href="/api/clients" target="_blank">/api/clients</a></td>
+								 						<td>List of all connected clients. support GET request like this:</br>
+								 							http://localhost:18083/api/clients?curr_page=1&page_size=100&client_key=Key
+								 						</td>
+								 					</tr>
+								 					<tr>
+								 						<td>Y</td>
+								 						<td>Y</td>
+								 						<td><a href="/api/sessions" target="_blank">/api/sessions</a></td>
+								 						<td>List of all sessions. support GET request like this:</br>
+								 							http://localhost:18083/api/sessions?curr_page=1&page_size=100&client_key=Key
+								 						</td>
+								 					</tr>
+								 					<tr>
+								 						<td>Y</td>
+								 						<td>Y</td>
+								 						<td><a href="/api/topics" target="_blank">/api/topics</a></td>
+								 						<td>List of all Topics</td>
+								 					</tr>
+								 					<tr>
+								 						<td>Y</td>
+								 						<td>Y</td>
+								 						<td><a href="/api/routes" target="_blank">/api/routes</a></td>
+								 						<td>List of all routes. support GET request like this:</br>
+								 							http://localhost:18083/api/routes?curr_page=1&page_size=100&topic=Topic
+								 						</td>
+								 					</tr>
+								 					<tr>
+								 						<td>Y</td>
+								 						<td>Y</td>
+								 						<td><a href="/api/subscriptions" target="_blank">/api/subscriptions</a></td>
+								 						<td>List of all Subscriptions. support GET request like this:</br>
+								 							http://localhost:18083/api/subscriptions?curr_page=1&page_size=100&client_key=Key
+								 						</td>
+								 					</tr>
+								 					<tr>
+								 						<td>Y</td>
+								 						<td>Y</td>
+								 						<td><a href="/api/plugins" target="_blank">/api/plugins</a></td>
+								 						<td>Show loaded plugins</td>
+								 					</tr>
+								 					<tr>
+								 						<td>Y</td>
+								 						<td>Y</td>
+								 						<td><a href="/api/users" target="_blank">/api/users</a></td>
+								 						<td>List of all admins</td>
+								 					</tr>
+								 				</tbody>
+								 			</table>
+								 		</div>
+								 	</div>
+								 </div>
+								
+               </div>
+							 
+							 
+						 </div>
+            
+            <!-- Main Footer -->
+            <footer class="main-footer sticky footer-type-1">
+            <div class="footer-inner">
+                <!-- Add your copyright text here -->
+                <div class="footer-text">
+                    &copy; 2012 -
+                    <script type="text/javascript">
+                        document.write(new Date().getFullYear());
+                    </script>
+                    Powered by <strong> <a href="http://emqtt.io"
+                        target="_blank" title="emqtt">eMQTT.IO</a></strong>
+                </div>
+
+                <div class="go-up">
+                    <a href="javascript:;" rel="go-top"> <i class="glyphicon glyphicon-chevron-up"></i></a>
+                </div>
+            </div>
+            </footer>
+        
+        </div>
+        
+    </div>
+</body>
+<!-- Bottom Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/mqttws31.js"></script>
+<script src="assets/js/toastr/toastr.min.js"></script>
+<script src="assets/js/TweenMax.min.js"></script>
+<script src="assets/js/joinable.js"></script>
+<script src="assets/js/vue.js"></script>
+<script src="assets/js/sog.js"></script>
+<!-- JavaScripts initializations and stuff -->
+<script src="assets/js/pageinfo.js"></script>
+<script src="assets/js/webapi.js"></script>
+<script src="assets/js/dashboard.js"></script>
+<script src="assets/js/clients.js"></script>
+<script src="assets/js/sessions.js"></script>
+<script src="assets/js/plugins.js"></script>
+<script src="assets/js/topics.js"></script>
+<script src="assets/js/routes.js"></script>
+<script src="assets/js/subscriptions.js"></script>
+<script src="assets/js/alarms.js"></script>
+<script src="assets/js/websocket.js"></script>
+<script src="assets/js/users.js"></script>
+<script src="assets/js/overview.js"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function($) {
+        dashboard.init(document.location.href);
+    });
+</script>
+</html>
